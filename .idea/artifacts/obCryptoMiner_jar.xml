@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="obCryptoMiner:jar">
+    <output-path>D:/PluginTest 1.16.5/plugins</output-path>
+    <root id="archive" name="obCryptoMiner.jar">
+      <element id="module-output" name="obCryptoMiner" />
+    </root>
+  </artifact>
+</component>

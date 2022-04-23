@@ -1,0 +1,9 @@
+name: obCryptoMiner
+main: com.obyrkl.cryptominer.Main
+version: 1.0.0
+author: OnurBeyTR
+api-version: 1.16
+commands:
+  obcrypto:
+    usage: /<command>
+    description: crypto komutu
