@@ -1,33 +1,22 @@
 Miner:
-  #Miner tamir ücreti.
+  #Currency in which crypto will be converted
+  cryptocurrency: "usd"
+  #Miner repair cost
   repairCost: 10000.0
-  #Miner ne kadar kripto kazsın.
+  #how much do you dig per minute
   perMinuteMine: 0.00005
-  #Miner her dakikada ne kadar hasar alsın.
+  #How much damage does miner take per minute.
   damageRange:
     min: 0.03
     max: 0.1
-  #Ne kadar mesafede bir oyuncu varsa çalışsın.
-  #NOT: (20 block üstüne çıkarsanız performans sorunları başlayabilir)
+  #No matter how far away a player is.
+  #NOTE: (Performance problems may occur if you go above 20 blocks)
   checkPlayerRadius: 20
-  #Yakında oyuncu olup olmadığı kaç dakikada bir kontrol edilsin.
-  #NOT: (15 dakika altına inerseniz performans sorunları başlayabilir)
+  #Check every few minutes if there is a player nearby.
+  #NOTE: (Performance issues may start if you go under 15 minutes)
   checkPlayerMinute: 15
-  #Sunucu kasma ve bellek kullanımını düşürmek için aktif edebilirsiniz.
+  #You can activate it to reduce server lag and memory usage.
   delete-unused-Miners:
     Status: false
-    #Gün cinsinden girmeniz gerekiyor.
+    #You must enter in days.
     Time: 30
-Messages:
-  wrongNumberEntry: "&dCryptoMiner &8» &7Hatalı sayı girişi yaptınız."
-  insufficientBalance: "&dCryptoMiner &8» &7Bakiye yetersiz."
-  cryptocurrencySold: "&dCryptoMiner &8» &e%amount% %crypto% &7şu fiyata satıldı: &a%price% TL"
-  minerFailedStart: "&dCryptoMiner &8» &7Miner başlatılamadı!"
-  minerStatusChanged: "&dCryptoMiner &8» &7Miner başarıyla %status% &7edildi!"
-  minerRepairSuccessful: "&dCryptoMiner &8» &7Miner &e%price% TL &7karşılığında tamir edildi!"
-  inputAmount: "Miktar Girin."
-  noManageAllowed: "&dCryptoMiner &8» &7Bu miner'ı yönetmek için izniniz yok!"
-  noBreakAllowed: "&dCryptoMiner &8» &7Bu miner'ı kırmak için izniniz yok!"
-  minerDeletedSystem: "&dCryptoMiner &8» &7Bu miner sistem tarafından silinmiş!"
-  active: "&aaktif"
-  deactive: "&cdeaktif"

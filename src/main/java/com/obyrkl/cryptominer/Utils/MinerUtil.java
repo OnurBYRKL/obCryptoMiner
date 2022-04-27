@@ -62,11 +62,15 @@ public class MinerUtil {
                 durability = "&c"+String.format("%.2f", miner.getDurability())+"%";
             }
             String owner = (Bukkit.getPlayer(miner.getOwner()) == null) ? Bukkit.getOfflinePlayer(miner.getOwner()).getName() : Bukkit.getPlayer(miner.getOwner()).getName();
-            lore.add(ChatUtil.format("&7Sahip: &8"+owner));
-            lore.add(ChatUtil.format("&7Üretim: &8"+String.format("%.6f", miner.getMineValue())+" BTC"));
-            lore.add(ChatUtil.format("&7Toplam Üretim: &8"+String.format("%.6f", miner.getTotalMineValue())+" BTC"));
-            lore.add(ChatUtil.format("&7Miner Bakiyesi: &8"+String.format("%.6f", miner.getMinerBalance())+" BTC"));
-            lore.add(ChatUtil.format("&7Dayanıklılık: "+durability));
+
+            for(String text : Main.instance.getLang().getList("Miner-Item.Lore")){
+                text = text.replace("%owner%",owner);
+                text = text.replace("%mine_value%",String.format("%.6f", miner.getMineValue()));
+                text = text.replace("%total_mine_value%",String.format("%.6f", miner.getTotalMineValue()));
+                text = text.replace("%miner_balance%",String.format("%.6f", miner.getMinerBalance()));
+                text = text.replace("%durability%",durability);
+                lore.add(ChatUtil.format(text));
+            }
             skullMeta.setLore(lore);
         }
         skull.setItemMeta(skullMeta);

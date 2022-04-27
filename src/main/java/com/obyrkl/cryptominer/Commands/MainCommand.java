@@ -24,7 +24,7 @@ public class MainCommand implements CommandExecutor {
             }
             if(args[0].equalsIgnoreCase("give")){
                 if(!player.hasPermission("obcryptominer.give")){
-                    player.sendMessage(ChatUtil.format("&dCryptoMiner &8» &7Yetersiz yetki!"));
+                    player.sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.insufficientPermission")));
                     return true;
                 }
                 if(args.length < 2){
@@ -33,17 +33,17 @@ public class MainCommand implements CommandExecutor {
                 }
                 Player targetPlayer = Bukkit.getPlayerExact(args[1]);
                 if(targetPlayer == null){
-                    player.sendMessage(ChatUtil.format("&dCryptoMiner &8» &7Oyuncu bulunamadı!"));
+                    player.sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.playerNotFound")));
                     return true;
                 }
                 if(targetPlayer.getInventory().firstEmpty() == -1){
-                    player.sendMessage(ChatUtil.format("&dCryptoMiner &8» &7Oyuncunun çantası dolu!"));
+                    player.sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.playerInventoryFull")));
                     return true;
                 }
                 UUID minerUUID = MinerUtil.createRandomUUID();
                 Main.instance.getMinerManager().createMiner(targetPlayer.getUniqueId(),minerUUID);
                 targetPlayer.getInventory().addItem(MinerUtil.getMinerItem(minerUUID));
-                player.sendMessage(ChatUtil.format("&dCryptoMiner &8» &7Miner oyuncuya verildi!"));
+                player.sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.givedMiner")));
             }
         }else if(sender instanceof ConsoleCommandSender){
             if(args[0].equalsIgnoreCase("give")){

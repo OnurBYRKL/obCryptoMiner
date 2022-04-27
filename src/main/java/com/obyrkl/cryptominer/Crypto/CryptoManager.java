@@ -27,7 +27,7 @@ public class CryptoManager {
 
     public void addCrypto(String name, String shortName){
         try {
-            HashMap<String, String> currencyMap = MinerUtil.getCurrency(name,"try");
+            HashMap<String, String> currencyMap = MinerUtil.getCurrency(name,Main.instance.getConfig().getString("Miner.cryptocurrency"));
             cryptoSet.add(new Crypto(name,shortName,Float.valueOf(currencyMap.get("current_price")),Float.valueOf(currencyMap.get("price_change_24h")),Float.valueOf(currencyMap.get("price_change_percentage_24h"))));
         } catch (IOException | InterruptedException e) {
             plugin.getLogger().log(Level.SEVERE,"An error occurred while creating crypto!");

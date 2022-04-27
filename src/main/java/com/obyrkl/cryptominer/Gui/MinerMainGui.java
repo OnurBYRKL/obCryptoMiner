@@ -29,7 +29,11 @@ public class MinerMainGui {
         Inventory inv = Bukkit.createInventory(null, 27, ChatUtil.format("&0Miner"));
 
         for(int i=0;i<27;i++){
-            inv.setItem(i,new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+            ItemStack cam = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+            ItemMeta cammeta = cam.getItemMeta();
+            cammeta.setDisplayName(" ");
+            cam.setItemMeta(cammeta);
+            inv.setItem(i,cam);
         }
 
         player.openInventory(inv);
@@ -66,37 +70,48 @@ public class MinerMainGui {
         } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        item_0meta.setDisplayName(ChatUtil.format("&dMiner"));
         List<String> lore = new ArrayList<>();
-        lore.add(ChatUtil.format("&7Durum;"));
-        lore.add((miner.isMinerEnabled() == true) ? ChatUtil.format("  &aAçık") : ChatUtil.format("  &cKapalı"));
-        lore.add(ChatUtil.format(" "));
-        lore.add(ChatUtil.format("&7Üretim;"));
-        lore.add(ChatUtil.format("  &e"+String.format("%.6f", miner.getMineValue())+" BTC/d"));
-        lore.add(ChatUtil.format(" "));
-        lore.add(ChatUtil.format("&7Toplam Üretim;"));
-        lore.add(ChatUtil.format("  &e"+String.format("%.6f", miner.getTotalMineValue())+" BTC"));
-        lore.add(ChatUtil.format(" "));
-        lore.add(ChatUtil.format("&7Dayanıklılık;"));
-        String durability = null;
-        if(miner.getDurability() >= 66.6){
-            durability = "&a"+String.format("%.2f", miner.getDurability())+"%";
-        }else if(miner.getDurability() >= 33.3 && miner.getDurability() < 66.6){
-            durability = "&e"+String.format("%.2f", miner.getDurability())+"%";
-        }else if(miner.getDurability() < 33.3){
-            durability = "&c"+String.format("%.2f", miner.getDurability())+"%";
-        }
-        lore.add(ChatUtil.format("  "+durability));
-        if(miner.getDurability() <= 0){
-            lore.add(ChatUtil.format(" "));
-            lore.add(ChatUtil.format("&7Tamir Ücreti;"));
-            lore.add(ChatUtil.format("  &e"+String.format("%.2f", Main.instance.getConfig().getDouble("Miner.repairCost"))+" TL"));
-        }
-        lore.add(ChatUtil.format(" "));
-        lore.add(ChatUtil.format("&7Kısayollar;"));
-        lore.add(ChatUtil.format("  &eMiner'ı "+((miner.isMinerEnabled() == true) ? "kapatmak" : "açmak")+" için &dsol-tık"));
-        if(miner.getDurability() <= 0){
-            lore.add(ChatUtil.format("  &eMiner'ı tamir etmek için &dsağ-tık"));
+        if(miner.getDurability() > 0){
+            item_0meta.setDisplayName(ChatUtil.format(Main.instance.getLang().getString("GUI.Miner.Name")));
+            for(String text : Main.instance.getLang().getList("GUI.Miner.Lore")){
+                text = text.replace("%status%",(miner.isMinerEnabled() == true) ? Main.instance.getLang().getString("GUI.enable") : Main.instance.getLang().getString("GUI.disable"));
+                text = text.replace("%mine_value%",String.format("%.6f", miner.getMineValue()));
+                text = text.replace("%total_mine_value%",String.format("%.6f", miner.getTotalMineValue()));
+
+                String durability = null;
+                if(miner.getDurability() >= 66.6){
+                    durability = "&a"+String.format("%.2f", miner.getDurability())+"%";
+                }else if(miner.getDurability() >= 33.3 && miner.getDurability() < 66.6){
+                    durability = "&e"+String.format("%.2f", miner.getDurability())+"%";
+                }else if(miner.getDurability() < 33.3){
+                    durability = "&c"+String.format("%.2f", miner.getDurability())+"%";
+                }
+
+                text = text.replace("%durability%",durability);
+                text = text.replace("%change_status%",((miner.isMinerEnabled() == true) ? Main.instance.getLang().getString("GUI.close") : Main.instance.getLang().getString("GUI.open")));
+                lore.add(ChatUtil.format(text));
+            }
+        }else{
+            item_0meta.setDisplayName(ChatUtil.format(Main.instance.getLang().getString("GUI.Broken-Miner.Name")));
+            for(String text : Main.instance.getLang().getList("GUI.Broken-Miner.Lore")){
+                text = text.replace("%status%",(miner.isMinerEnabled() == true) ? Main.instance.getLang().getString("GUI.enable") : Main.instance.getLang().getString("GUI.disable"));
+                text = text.replace("%mine_value%",String.format("%.6f", miner.getMineValue()));
+                text = text.replace("%total_mine_value%",String.format("%.6f", miner.getTotalMineValue()));
+
+                String durability = null;
+                if(miner.getDurability() >= 66.6){
+                    durability = "&a"+String.format("%.2f", miner.getDurability())+"%";
+                }else if(miner.getDurability() >= 33.3 && miner.getDurability() < 66.6){
+                    durability = "&e"+String.format("%.2f", miner.getDurability())+"%";
+                }else if(miner.getDurability() < 33.3){
+                    durability = "&c"+String.format("%.2f", miner.getDurability())+"%";
+                }
+
+                text = text.replace("%durability%",durability);
+                text = text.replace("%repair_cost%",String.format("%.2f", Main.instance.getConfig().getDouble("Miner.repairCost")));
+                text = text.replace("%change_status%",((miner.isMinerEnabled() == true) ? Main.instance.getLang().getString("GUI.close") : Main.instance.getLang().getString("GUI.open")));
+                lore.add(ChatUtil.format(text));
+            }
         }
         item_0meta.setLore(lore);
         item_0.setItemMeta(item_0meta);
@@ -119,17 +134,13 @@ public class MinerMainGui {
         } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        item_1meta.setDisplayName(ChatUtil.format("&dBilgi"));
+        item_1meta.setDisplayName(ChatUtil.format(Main.instance.getLang().getString("GUI.Information.Name")));
         List<String> lore1 = new ArrayList<>();
-        lore1.add(ChatUtil.format("&7Miner Bakiyesi;"));
-        lore1.add(ChatUtil.format("  &e"+String.format("%.6f", miner.getMinerBalance())+" BTC"));
-        lore1.add(ChatUtil.format(" "));
-        lore1.add(ChatUtil.format("&7Bakiye Değeri;"));
-        lore1.add(ChatUtil.format("  &e"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice()*miner.getMinerBalance())+" TL"));
-        lore1.add(ChatUtil.format(" "));
-        lore1.add(ChatUtil.format("&7Kısayollar;"));
-        lore1.add(ChatUtil.format("  &eMiktarlı satış için &dsol-tık"));
-        lore1.add(ChatUtil.format("  &eHepsini satmak için &dshift+sol-tık"));
+        for(String text : Main.instance.getLang().getList("GUI.Information.Lore")){
+            text = text.replace("%miner_balance%",String.format("%.6f", miner.getMinerBalance()));
+            text = text.replace("%balance_value%",String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice()*miner.getMinerBalance()));
+            lore1.add(ChatUtil.format(text));
+        }
         item_1meta.setLore(lore1);
         item_1.setItemMeta(item_1meta);
 
@@ -152,12 +163,14 @@ public class MinerMainGui {
         } catch (IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        item_2meta.setDisplayName(ChatUtil.format("&dPiyasa"));
+        item_2meta.setDisplayName(ChatUtil.format(Main.instance.getLang().getString("GUI.Market.Name")));
         List<String> lore2 = new ArrayList<>();
-        lore2.add(ChatUtil.format("&7Bitcoin Alış;"));
-        String price_change_24h = (Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_24h() < 0) ? ChatUtil.format("&c"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_24h())) : ChatUtil.format("&a"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_24h()));
-        String price_change_percentage_24h = (Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_percentage_24h() < 0) ? ChatUtil.format("&c"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_percentage_24h())) : ChatUtil.format("&a"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_percentage_24h()));
-        lore2.add(ChatUtil.format("  &e"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice())+" TL "+"&7(&a"+price_change_24h+" TL&7) "+"&7(&a"+price_change_percentage_24h+"%&7)"));
+        for(String text : Main.instance.getLang().getList("GUI.Market.Lore")){
+            text = text.replace("%price%",String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice()));
+            text = text.replace("%price_change_24h%",(Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_24h() < 0) ? ChatUtil.format("&c"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_24h())) : ChatUtil.format("&a"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_24h())));
+            text = text.replace("%price_change_percentage_24h%",(Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_percentage_24h() < 0) ? ChatUtil.format("&c"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_percentage_24h())) : ChatUtil.format("&a"+String.format("%.2f", Main.instance.getCryptoManager().getCrypto("Bitcoin").getPrice_change_percentage_24h())));
+            lore2.add(ChatUtil.format(text));
+        }
         item_2meta.setLore(lore2);
         item_2.setItemMeta(item_2meta);
 

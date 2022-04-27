@@ -37,7 +37,7 @@ public class MinerListeners implements Listener {
         if(miner == null){
             event.setCancelled(true);
             player.setItemInHand(new ItemStack(Material.AIR));
-            player.sendMessage(ChatUtil.format(Main.instance.getConfig().getString("Messages.minerDeletedSystem")));
+            player.sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.minerDeletedSystem")));
             return;
         }
         miner.setPlaced(true);
@@ -53,7 +53,7 @@ public class MinerListeners implements Listener {
         }
         Miner miner = Main.instance.getMinerManager().getMiner(event.getBlock().getLocation());
         if(!miner.getOwner().equals(event.getPlayer().getUniqueId())){
-            event.getPlayer().sendMessage(ChatUtil.format(Main.instance.getConfig().getString("Messages.noBreakAllowed")));
+            event.getPlayer().sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.noBreakAllowed")));
             event.setCancelled(true);
             return;
         }
@@ -78,12 +78,12 @@ public class MinerListeners implements Listener {
         }
         Miner miner = Main.instance.getMinerManager().getMiner(event.getClickedBlock().getLocation());
         if(!miner.getOwner().equals(event.getPlayer().getUniqueId())){
-            event.getPlayer().sendMessage(ChatUtil.format(Main.instance.getConfig().getString("Messages.noManageAllowed")));
+            event.getPlayer().sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.noManageAllowed")));
             return;
         }
         if(event.getPlayer().isSneaking()){
             if(miner.getDurability() <= 0){
-                event.getPlayer().sendMessage(ChatUtil.format(Main.instance.getConfig().getString("Messages.minerFailedStart")));
+                event.getPlayer().sendMessage(ChatUtil.format(Main.instance.getLang().getString("Messages.minerFailedStart")));
                 return;
             }
             if(miner.isMinerEnabled() == true){
@@ -93,8 +93,8 @@ public class MinerListeners implements Listener {
                 miner.setMinerStatus(true);
                 event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.MASTER, 1, 1);
             }
-            String message = Main.instance.getConfig().getString("Messages.minerStatusChanged");
-            message = message.replace("%status%",((miner.isMinerEnabled() == true) ? Main.instance.getConfig().getString("Messages.active") : Main.instance.getConfig().getString("Messages.deactive")));
+            String message = Main.instance.getLang().getString("Messages.minerStatusChanged");
+            message = message.replace("%status%",((miner.isMinerEnabled() == true) ? Main.instance.getLang().getString("Messages.active") : Main.instance.getLang().getString("Messages.deactive")));
             event.getPlayer().sendMessage(ChatUtil.format(message));
             return;
         }

@@ -55,7 +55,7 @@ public class Crypto {
             @Override
             public void run() {
                 try {
-                    HashMap<String, String> currencyMap = MinerUtil.getCurrency(name,"try");
+                    HashMap<String, String> currencyMap = MinerUtil.getCurrency(name,Main.instance.getConfig().getString("Miner.cryptocurrency"));
                     price = Float.valueOf(currencyMap.get("current_price"));
                     price_change_24h = Float.valueOf(currencyMap.get("price_change_24h"));
                     price_change_percentage_24h = Float.valueOf(currencyMap.get("price_change_percentage_24h"));

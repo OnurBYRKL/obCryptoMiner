@@ -7,6 +7,7 @@ import com.obyrkl.cryptominer.Listeners.MinerListeners;
 import com.obyrkl.cryptominer.Listeners.PlayerListeners;
 import com.obyrkl.cryptominer.Miner.MinerManager;
 import com.obyrkl.cryptominer.Utils.Database;
+import com.obyrkl.cryptominer.Utils.Lang;
 import com.obyrkl.cryptominer.Utils.Metrics;
 import com.obyrkl.cryptominer.Utils.MinerUtil;
 import net.milkbowl.vault.economy.Economy;
@@ -28,6 +29,8 @@ public class Main extends JavaPlugin {
     private Database database;
     private MinerManager minerManager;
     private CryptoManager cryptoManager;
+
+    private Lang lang;
 
     private Economy econ;
 
@@ -53,6 +56,9 @@ public class Main extends JavaPlugin {
         this.minerManager = new MinerManager(this);
         this.cryptoManager = new CryptoManager(this);
         cryptoManager.addCrypto("Bitcoin","BTC");
+
+        //Lang
+        this.lang = new Lang(this);
 
         //Database
         try {
@@ -108,5 +114,9 @@ public class Main extends JavaPlugin {
 
     public CryptoManager getCryptoManager() {
         return cryptoManager;
+    }
+
+    public Lang getLang() {
+        return lang;
     }
 }
