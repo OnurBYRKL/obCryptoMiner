@@ -28,12 +28,12 @@ public class MinerMainGui {
     public static void MinerMainGui(Player player, Miner miner) {
         Inventory inv = Bukkit.createInventory(null, 27, ChatUtil.format("&0Miner"));
 
+        ItemStack borderItem = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta borderItemMeta = borderItem.getItemMeta();
+        borderItemMeta.setDisplayName(" ");
+        borderItem.setItemMeta(borderItemMeta);
         for(int i=0;i<27;i++){
-            ItemStack cam = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-            ItemMeta cammeta = cam.getItemMeta();
-            cammeta.setDisplayName(" ");
-            cam.setItemMeta(cammeta);
-            inv.setItem(i,cam);
+            inv.setItem(i,borderItem);
         }
 
         player.openInventory(inv);
